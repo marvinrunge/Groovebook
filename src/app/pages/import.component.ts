@@ -29,11 +29,14 @@ interface ParseDocResponse {
           Aus Google Docs: Datei → Herunterladen → Microsoft Word (.docx).
           PDF und Scans gehen über die Cloud Function, sobald Firebase eingerichtet ist.
         </p>
-        <input
-          type="file"
-          accept=".txt,.md,.csv,.tsv,.docx,.pdf,.json,text/plain"
-          (change)="onFile($event)"
-        />
+        <div class="row wrap">
+          <input
+            type="file"
+            accept=".txt,.md,.csv,.tsv,.docx,.pdf,.json,text/plain"
+            (change)="onFile($event)"
+          />
+          <button class="ghost" (click)="downloadCsvTemplate()">CSV-Vorlage herunterladen</button>
+        </div>
         @if (fileNote(); as note) {
           <p class="small">{{ note }}</p>
         }
@@ -131,6 +134,21 @@ export class ImportComponent {
     this.result.set(parsed);
     this.songs.set(parsed.songs.map((s) => ({ ...s })));
     if (parsed.name && !this.targetId()) this.listName = parsed.name;
+  }
+
+  downloadCsvTemplate(): void {
+    const csv = [
+      '"Song","Akkorde","Notizen"',
+      '"Bad Girls","D G D C","Clean"',
+      '"Lost in Music","D",""',
+      '"Ain\'t No Mountain High Enough","D G D C","Intro 2x, Solo 1x"',
+    ].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'groovebook-csv-vorlage.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
   }
 
   async onFile(event: Event): Promise<void> {
