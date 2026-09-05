@@ -47,12 +47,41 @@ export function looksLikeChordLine(line: string): boolean {
   return hits / tokens.length >= 0.6 && tokens.some((t) => CHORD_RE.test(t));
 }
 
-/** Zerlegt eine Tabellenzeile in Spalten — Tab, Pipe oder mehrere Leerzeichen. */
+/** Zerlegt eine Tabellenzeile in Spalten — CSV, TSV, Pipe oder mehrere Leerzeichen. */
 function splitColumns(line: string): string[] | null {
   if (line.includes('\t')) {
     const cols = line.split('\t').map((c) => c.trim());
     return cols.filter(Boolean).length >= 2 ? cols : null;
   }
+
+  const csvSeparator = /[;,]/;
+  if (csvSeparator.test(line) && !looksLikeChordLine(line)) {
+    const cols: string[] = [];
+    let field = '';
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') {
+        if (inQuotes && line[i + 1] === '"') {
+          field += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+        continue;
+      }
+      if ((ch === ',' || ch === ';') && !inQuotes) {
+        cols.push(field.trim());
+        field = '';
+        continue;
+      }
+      field += ch;
+    }
+    cols.push(field.trim());
+    const clean = cols.map((c) => c.trim());
+    if (clean.filter(Boolean).length >= 2) return clean;
+  }
+
   // Mehrere Leerzeichen zuerst: '| ' steht in Akkorden fuer Taktstriche.
   if (/\S {3,}\S/.test(line)) return line.split(/ {3,}/).map((c) => c.trim());
   if ((line.match(/\|/g)?.length ?? 0) >= 2 && !looksLikeChordLine(line)) {
