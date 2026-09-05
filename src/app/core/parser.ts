@@ -1,5 +1,7 @@
 /* Identisch mit src/app/core/parser.ts — beide Dateien synchron halten. */
 
+import { emptySong, type Song } from './models';
+
 export interface ParsedSong {
   title: string;
   key: string;
@@ -12,6 +14,17 @@ export interface ParseResult {
   songs: ParsedSong[];
   /** Kurze Beschreibung, wie erkannt wurde — hilft beim Nachbessern. */
   strategy: string;
+}
+
+export function toSongs(parsed: ParsedSong[]): Song[] {
+  return parsed.map((song) =>
+    emptySong({
+      title: song.title,
+      key: song.key,
+      chords: song.chords,
+      notes: song.notes,
+    }),
+  );
 }
 
 /** Akkord-Token: C, F#m7, Bbmaj7, A/C#, Em9, N.C. */
