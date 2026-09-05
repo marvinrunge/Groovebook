@@ -1,6 +1,5 @@
 import { Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Location } from '@angular/common';
 import { AuthService } from '../core/auth.service';
 import { LibraryStore } from '../core/library.store';
 
@@ -11,7 +10,7 @@ import { LibraryStore } from '../core/library.store';
   template: `
     <header class="appbar">
       @if (back()) {
-        <button class="ghost icon" (click)="location.back()" aria-label="Zurück">←</button>
+        <button class="ghost icon" routerLink="/" aria-label="Zurück">←</button>
       }
 
       <div class="brand grow truncate">
@@ -45,7 +44,6 @@ export class HeaderComponent {
 
   readonly auth = inject(AuthService);
   readonly store = inject(LibraryStore);
-  readonly location = inject(Location);
 
   async signIn(): Promise<void> {
     const hadLocal = await this.store.hasLocalData();
