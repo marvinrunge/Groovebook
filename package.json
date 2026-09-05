@@ -1,0 +1,34 @@
+{
+  "name": "groovebook",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "ng serve",
+    "build": "ng build",
+    "serve:pwa": "npx http-server dist/groovebook/browser -p 8080"
+  },
+  "dependencies": {
+    "@angular/animations": "^20.3.27",
+    "@angular/common": "^20.3.27",
+    "@angular/compiler": "^20.3.27",
+    "@angular/core": "^20.3.27",
+    "@angular/forms": "^20.3.27",
+    "@angular/platform-browser": "^20.3.27",
+    "@angular/router": "^20.3.27",
+    "@angular/service-worker": "^20.3.27",
+    "firebase": "^12.1.0",
+    "rxjs": "~7.8.2",
+    "tslib": "^2.8.1",
+    "zone.js": "~0.15.1"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^20.3.27",
+    "@angular/cli": "^20.3.27",
+    "@angular/compiler-cli": "^20.3.27",
+    "http-server": "^14.1.1",
+    "typescript": "~5.9.2"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}
