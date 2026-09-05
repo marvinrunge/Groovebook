@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { LibraryStore } from './core/library.store';
+import { ThemeService } from './core/theme.service';
 
 @Component({
   selector: 'gm-root',
@@ -24,6 +25,7 @@ import { LibraryStore } from './core/library.store';
 })
 export class AppComponent {
   readonly store = inject(LibraryStore);
+  readonly theme = inject(ThemeService);
   readonly updateReady = signal(false);
 
   constructor() {
