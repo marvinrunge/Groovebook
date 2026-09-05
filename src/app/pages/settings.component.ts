@@ -3,6 +3,7 @@ import { LibraryStore } from '../core/library.store';
 import { AuthService } from '../core/auth.service';
 import { HeaderComponent } from '../shell/header.component';
 import { isFirebaseConfigured } from '../core/firebase';
+import { ThemeMode, ThemeService } from '../core/theme.service';
 
 @Component({
   selector: 'gm-settings',
@@ -41,6 +42,19 @@ import { isFirebaseConfigured } from '../core/firebase';
       </section>
 
       <section class="card stack" style="gap: 10px">
+        <h2>Darstellung</h2>
+        <p class="small">Wähle die Farben, die für dich und deine Bühne am besten passen.</p>
+        <label class="field">
+          <span>Farbmodus</span>
+          <select [value]="theme.mode()" (change)="setTheme($event)">
+            <option value="current">Aktuell: Nachtblau mit Bernstein</option>
+            <option value="light">Hell: weißer Hintergrund, schwarze Schrift</option>
+            <option value="contrast">Kontrast: schwarzer Hintergrund, weiße Schrift</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="card stack" style="gap: 10px">
         <h2>Sicherung</h2>
         <p class="small">
           Eine JSON-Datei mit allen Setlisten. Über „Importieren" kommt sie zurück.
@@ -72,7 +86,13 @@ import { isFirebaseConfigured } from '../core/firebase';
 export class SettingsComponent {
   readonly store = inject(LibraryStore);
   readonly auth = inject(AuthService);
+  readonly theme = inject(ThemeService);
   readonly firebaseReady = isFirebaseConfigured();
+
+  setTheme(event: Event): void {
+    const mode = (event.target as HTMLSelectElement).value as ThemeMode;
+    this.theme.setMode(mode);
+  }
 
   async signIn(): Promise<void> {
     const hadLocal = await this.store.hasLocalData();
