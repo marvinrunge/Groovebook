@@ -90,6 +90,7 @@ a { color: var(--amber); }
 .muted { color: var(--muted); }
 .small { font-size: 0.85rem; }
 .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.list-link { text-decoration: none; }
 
 /* ---------- Controls ---------- */
 button, .btn {

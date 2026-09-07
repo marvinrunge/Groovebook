@@ -27,7 +27,7 @@ import { HeaderComponent } from '../shell/header.component';
       <div class="list">
         @for (list of store.sorted(); track list.id) {
           <div class="list-item">
-            <a class="grow truncate" [routerLink]="['/l', list.id]" style="color: inherit">
+            <a class="grow truncate list-link" [routerLink]="['/l', list.id]" style="color: inherit">
               <div class="truncate" style="font-weight: 600">{{ list.name }}</div>
               <div class="small muted">
                 {{ list.songs.length }} Songs · {{ list.updatedAt | date: 'dd.MM.yy, HH:mm' }}
